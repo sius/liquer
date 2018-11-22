@@ -13,7 +13,9 @@
     "interface-name": [true, "never-prefix"],
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "ordered-imports": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "no-unused-expression": [true, "allow-new","allow-fast-null-checks"],
+    "no-console": false
   },
   "rulesDirectory": []
 }

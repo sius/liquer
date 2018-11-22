@@ -35,25 +35,24 @@ function _findLicense(options: StreamOptions, d: Dependency, cb: (license: Licen
     }
     cb(license);
   } else if (_hasParent(pom)) {
-    const parentGAV: GAV = { 
+    const parentGAV: GAV = {
         groupId: pom.project.parent.groupId
       , artifactId: pom.project.parent.artifactId
-      , version: pom.project.parent.version  
-    }
-    console.log(parentGAV)
+      , version: pom.project.parent.version
+    };
+    console.log(parentGAV);
     options.repoDb.findOne(parentGAV, (err: Error, parent: Dependency) => {
       if (err) {
-        options.log.write(err.message)
+        options.log.write(err.message);
       }
       if (parent) {
-        console.log('found')
-        _findLicense(options, parent, cb)
+        _findLicense(options, parent, cb);
       } else {
-        cb(null)
+        cb(null);
       }
-    })
+    });
   } else {
-    cb(null)
+    cb(null);
   }
 }
 

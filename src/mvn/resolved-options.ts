@@ -23,14 +23,14 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
     this._scanTimeStamp = new Date();
     this._scanDir = `mvn-scan-${moment(this._scanTimeStamp).format('YYYYMMDD-HHmmss-SSS')}`;
     this._scanPath = resolve(this.wd, this._scanDir);
-    
+
     ensureDir(this._scanPath, (err) => {
       if (err) {
          cb(err);
       }
-      copyFile(this.srcPom, this.destPom, (err) => {
-        if (err) {
-          cb(err);
+      copyFile(this.srcPom, this.destPom, (err2: Error) => {
+        if (err2) {
+          cb(err2);
         }
         this._repoDbFilename = resolve(this._scanPath, `${this.options.localRepoDir}.db`);
         this._dependencyDbFilename = resolve(this._scanPath, `dependency.db`);
@@ -41,8 +41,8 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
         this._licenseDb = new Nedb({ filename: this._licenseDbFilename, autoload: true });
         this._dependencyDb = new Nedb({ filename: this._dependencyDbFilename, autoload: true });
         cb(null, this);
-      })
-    })
+      });
+    });
   }
   get wd() {
     return this.options.wd;

@@ -8,7 +8,6 @@ import { licenseStream } from './license-stream';
 import { logStream } from './log-stream';
 import { repoDbStream } from './repodb-stream';
 
-
 function _runGoal(options: MavenOptions) {
   new ResolvedOptions(options, (err, opts) => {
     if (err) {
@@ -18,14 +17,14 @@ function _runGoal(options: MavenOptions) {
     }
     spawn('mvn', opts.args)
       .stdout
-      .on('end', () => { console.log('done'), process.exit(0) })
+      .on('end', () => { console.log('done'), process.exit(0); })
       .pipe(split())
       .pipe(map(dependencyStream(opts)))
       .pipe(map(pomStream(opts)))
       .pipe(map(licenseStream(opts)))
       .pipe(map(repoDbStream(opts)))
       .pipe(map(logStream(opts)))
-      .pipe(process.stdout)
+      .pipe(process.stdout);
   });
 }
 
