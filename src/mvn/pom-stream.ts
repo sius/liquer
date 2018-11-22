@@ -10,7 +10,7 @@ const pomParser = new Parser({
   tagNameProcessors: [(name) => name.replace(/\./g, '_')]
 });
 
-const LICENSE_AT_PATTERN = /License[.\w\s~\.,]+at[.\w\s~\.,]*((http|https):\/\/.*)\b/gmi;
+const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\.:,*]*((http|https):\/\/[^\s]+)\b/gmi;
 
 function _grabFirstComment(xmlStr): string|null {
   let ret = null;
