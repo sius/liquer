@@ -18,4 +18,17 @@ function logStream(options: StreamOptions) {
   };
 }
 
-export { logStream };
+function licenseLogStream(options: StreamOptions) {
+
+  return (d: Dependency, cb: (err?: Error, line?: string) => void) => {
+    
+    if(d.bestLicense.text) {
+      cb(null, `${d.bestLicense.text}\n\n`);
+    } else {
+      cb();
+    }
+    
+  };
+}
+
+export { logStream, licenseLogStream};

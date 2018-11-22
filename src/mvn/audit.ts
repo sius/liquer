@@ -5,12 +5,14 @@ import { ResolvedOptions } from './resolved-options';
 import { dependencyStream } from './dependency-stream';
 import { pomStream } from './pom-stream';
 import { licenseStream } from './license-stream';
-import { logStream } from './log-stream';
+import { logStream, licenseLogStream } from './log-stream';
 import { createWriteStream } from 'fs-extra';
+import { resolve } from 'path'
 
 
 
 function _runGoal(options: MavenOptions) {
+  console.log(options);
   const opts = new ResolvedOptions(options);
   spawn('mvn', opts.args)
     .stdout
@@ -19,13 +21,13 @@ function _runGoal(options: MavenOptions) {
     .pipe(map(dependencyStream(opts)))
     .pipe(map(pomStream(opts)))
     .pipe(map(licenseStream(opts)))
-    .pipe(map(logStream(opts)))
-    .pipe(process.stdout);
+    .pipe(map(licenseLogStream(opts)))
+    //.pipe(process.stdout)
     .pipe(createWriteStream(resolve(__dirname, 'licenses.txt'), { flags: 'a+'}));
 }
 
 export function audit(options?: MavenOptions) {
-  _runGoal({ ...MAVEN_OPTIONS, ...options });
+  _runGoal({ ...MAVEN_OPTIONS, ...options, file: 'pom_210.xml' });
 }
 
 audit();
