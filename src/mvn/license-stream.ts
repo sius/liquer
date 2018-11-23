@@ -21,8 +21,8 @@ function _hasParent(pom: any) {
     && pom.project.parent);
 }
 
-function _findLicense(options: StreamOptions, d: Dependency, cb: (license: License) => void) {
-  let license: License;
+function _findLicense(d: Dependency, options: StreamOptions, cb: (license: License) => void) {
+  let license: License = d.bestLicense;
   const pom = d.pom;
   if (_hasLicenseNode(pom)) {
     const test = pom.project.licenses.license;
@@ -32,6 +32,8 @@ function _findLicense(options: StreamOptions, d: Dependency, cb: (license: Licen
       license = { ...d.bestLicense, name: licenseNames };
     } else if (typeof(test) === 'object') {
       license = { ...d.bestLicense, name: test.name };
+    } else {
+      license = d.bestLicense;
     }
     cb(license);
   } else if (_hasParent(pom)) {
@@ -40,13 +42,12 @@ function _findLicense(options: StreamOptions, d: Dependency, cb: (license: Licen
       , artifactId: pom.project.parent.artifactId
       , version: pom.project.parent.version
     };
-    console.log(parentGAV);
     options.repoDb.findOne(parentGAV, (err: Error, parent: Dependency) => {
       if (err) {
         options.log.write(err.message);
       }
       if (parent) {
-        _findLicense(options, parent, cb);
+        _findLicense(parent, options, cb);
       } else {
         cb(null);
       }
@@ -59,10 +60,10 @@ function _findLicense(options: StreamOptions, d: Dependency, cb: (license: Licen
 function licenseStream(options: StreamOptions) {
 
   return (dependency: Dependency, cb: (err?: Error, dependency?: Dependency) => void) => {
-    _findLicense(options, dependency, (license) => {
+    _findLicense(dependency, options, (license) => {
       if (license) {
         dependency.bestLicense.name = license.name;
-        if (!dependency.bestLicense.url) {
+        if (dependency.bestLicense.url === null) {
           dependency.bestLicense.url = license.url;
         }
       }

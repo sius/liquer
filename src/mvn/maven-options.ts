@@ -3,7 +3,7 @@ import { join, resolve } from 'path';
 
 export interface MavenOptions {
   wd?: string;
-  goal: string;
+  goal?: string;
   file?: string;
   logFile?: string;
   settings?: string;
@@ -19,5 +19,5 @@ export const MAVEN_OPTIONS: MavenOptions = {
   , localRepoDir: 'repo'
   , remoteRepo: 'https://repo.maven.apache.org/maven2'
   , logFile: 'log.txt'
-  , settings: join(homedir(), '.m2', 'settings.xml')
+  , settings: null // join(homedir(), '.m2', 'settings.xml')
 };

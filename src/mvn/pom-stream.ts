@@ -3,6 +3,7 @@ import { Dependency } from './dependency';
 import { join } from 'path';
 import { readFile } from 'fs';
 import { Parser } from 'xml2js';
+import { red } from 'colors';
 
 const pomParser = new Parser({
   ignoreAttrs: true,
@@ -10,8 +11,9 @@ const pomParser = new Parser({
   tagNameProcessors: [(name) => name.replace(/\./g, '_')]
 });
 
-const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\.:,*]*((http|https):\/\/[^\s]+)\b/gmi;
-
+// const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\\.:,*]*((http|https):\/\/[^\s\\]+)\b/gmi;
+// const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\\.:,*]*((http|https):\/\/[^\s\\]+)(\b|\s)/gmi;
+const LICENSE_AT_PATTERN = /((http|https):\/\/[^\s\\]+)(\b|\s)/gmi;
 function _grabFirstComment(xmlStr): string|null {
   let ret = null;
   if (!xmlStr) {
@@ -31,27 +33,33 @@ function pomStream(options: StreamOptions)
 : (dependency: Dependency, cb: (err: Error, data: Dependency) => void) => void {
 
   return (dependency: Dependency, cb: (err?: Error, dependency?: Dependency) => void) => {
-    readFile(dependency.pomfile, { flag: 'r'}, (e, xml) => {
-      if (e) {
-        // log.write ...
+    readFile(dependency.pomfile, { encoding: 'utf8', flag: 'r'}, (err: Error, xml: string) => {
+      if (err) {
+        options.log.write(err.message);
       }
       if (xml) {
-        const str = xml.toString();
-        pomParser.parseString(str, (err, pom) => {
-          if (err) {
-            // log.write
+        pomParser.parseString(xml, (err2, pom) => {
+          if (err2) {
+            options.log.write(err2.message);
           }
-          const text = _grabFirstComment(str);
-          let url = null;
+          const text = _grabFirstComment(xml);
+          let url: string = null;
           if (text) {
             const matches = LICENSE_AT_PATTERN.exec(text);
-            if (matches && matches[1]) {
+            if (matches) {
               url = matches[1].trim();
+              if (!url) {
+                console.log(url);
+              }
+            } else {
+              if (text) {
+                options.log.write(text);
+              }
             }
           }
 
           dependency.pom = pom;
-          dependency.bestLicense = { url, text };
+          dependency.bestLicense = { name: null , url, text };
           cb(err, dependency);
         });
       } else {
