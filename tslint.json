@@ -15,7 +15,9 @@
     "ordered-imports": false,
     "trailing-comma": false,
     "no-unused-expression": [true, "allow-new","allow-fast-null-checks"],
-    "no-console": false
+    "no-console": false,
+    "whitespace": false,
+    "max-line-length": [ true, 180 ]
   },
   "rulesDirectory": []
 }

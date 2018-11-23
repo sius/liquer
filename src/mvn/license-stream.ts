@@ -1,7 +1,6 @@
 import { StreamOptions } from './stream-options';
 import { Dependency } from './dependency';
 import { License } from './license';
-import { licenseLogStream } from './log-stream';
 import { GAV } from './gav';
 
 function _isArray(a: any): boolean {

@@ -1,5 +1,5 @@
 import { spawn } from 'child_process';
-import { split, map, stringify } from 'event-stream';
+import { split, map, readArray } from 'event-stream';
 import { MAVEN_OPTIONS, MavenOptions } from './maven-options';
 import { ResolvedOptions } from './resolved-options';
 import { dependencyStream } from './dependency-stream';
@@ -8,6 +8,7 @@ import { licenseStream } from './license-stream';
 import { logStream } from './log-stream';
 import { repoDbStream } from './repodb-stream';
 import { Dependency } from './dependency';
+import { readFile } from 'fs';
 
 function _runGoal(options: MavenOptions) {
 
@@ -26,12 +27,28 @@ function _runGoal(options: MavenOptions) {
       .pipe(map(licenseStream(opts)))
       .pipe(map(repoDbStream(opts)))
       .pipe(map(logStream(opts)))
-      .pipe(process.stdout)
       .on('end', () => {
-        opts.log.close();
-        console.log('done');
-        process.exit(0);
-      });
+
+        opts.repoDb.find({
+          'bestLicense.name': null,
+          'bestLicense.url': null
+        }, (_err: Error, docs: Dependency[]) => {
+          if (_err) {
+            opts.log.write(_err.message);
+          }
+          readArray(docs)
+            .pipe(map(licenseStream(opts)))
+            .pipe(map(repoDbStream(opts)))
+            .pipe(map(logStream(opts)))
+            .on('end', () => {
+              opts.log.close();
+              console.log('done');
+              process.exit(0);
+            })
+            .pipe(process.stdout);
+        });
+      })
+      .pipe(process.stdout);
   });
 }
 

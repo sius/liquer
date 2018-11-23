@@ -4,6 +4,7 @@ import { join } from 'path';
 import { readFile } from 'fs';
 import { Parser } from 'xml2js';
 import { red } from 'colors';
+import { getUrls } from 'get-urls';
 
 const pomParser = new Parser({
   ignoreAttrs: true,
@@ -11,9 +12,6 @@ const pomParser = new Parser({
   tagNameProcessors: [(name) => name.replace(/\./g, '_')]
 });
 
-// const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\\.:,*]*((http|https):\/\/[^\s\\]+)\b/gmi;
-// const LICENSE_AT_PATTERN = /License[.\w\s~\.:,*]+at[.\w\s~\\.:,*]*((http|https):\/\/[^\s\\]+)(\b|\s)/gmi;
-const LICENSE_AT_PATTERN = /((http|https):\/\/[^\s\\]+)(\b|\s)/gmi;
 function _grabFirstComment(xmlStr): string|null {
   let ret = null;
   if (!xmlStr) {
@@ -28,7 +26,20 @@ function _grabFirstComment(xmlStr): string|null {
   }
   return ret;
 }
-
+function getLicenseAtUrl(text): string {
+  if (text) {
+    const p0 = text.indexOf('License');
+    if (p0 > -1) {
+      const matches = /(https?:\/\/[^\s<>]+)[\b\s]?/gim.exec(text.substring(p0));
+      if (!!matches) {
+        return matches[1];
+      } else {
+        console.log(red(text));
+      }
+    }
+  }
+  return null;
+}
 function pomStream(options: StreamOptions)
 : (dependency: Dependency, cb: (err: Error, data: Dependency) => void) => void {
 
@@ -43,20 +54,7 @@ function pomStream(options: StreamOptions)
             options.log.write(err2.message);
           }
           const text = _grabFirstComment(xml);
-          let url: string = null;
-          if (text) {
-            const matches = LICENSE_AT_PATTERN.exec(text);
-            if (matches) {
-              url = matches[1].trim();
-              if (!url) {
-                console.log(url);
-              }
-            } else {
-              if (text) {
-                options.log.write(text);
-              }
-            }
-          }
+          const url: string = getLicenseAtUrl(text);
 
           dependency.pom = pom;
           dependency.bestLicense = { name: null , url, text };
@@ -69,4 +67,4 @@ function pomStream(options: StreamOptions)
   };
 }
 
-export { pomStream };
+export { pomStream, getLicenseAtUrl };
