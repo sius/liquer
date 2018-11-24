@@ -34,28 +34,28 @@ function licensesGroupedByCount(dependencies: Dependency[]): Map<string, License
   }, {} as Map<string, LicenseGroup>);
 }
 function report(options: StreamOptions, cb: () => void) {
-  const _w = options.report.write;
+
   options.repoDb.find({}).sort({ 'bestLicense.name': 1, 'bestLicense.url': 1 }).exec((_err: Error, dependencies: Dependency[]) => {
     const groups = licensesGroupedByCount(dependencies);
-    _w(S2);
+    options.report.write(S2);
     Object.keys(groups).forEach( (key) => {
       const licenseGroup: LicenseGroup = groups[key];
-      _w(`${key}: ${licenseGroup.count}\n`);
+      options.report.write(`${key}: ${licenseGroup.count}\n`);
     });
-    _w(S3);
-    _w(`Total Artifacts: ${dependencies.length}\n`);
-    _w(S2);
-    _w(NL);
+    options.report.write(S3);
+    options.report.write(`Total Artifacts: ${dependencies.length}\n`);
+    options.report.write(S2);
+    options.report.write(NL);
 
-    _w(S2);
+    options.report.write(S2);
     Object.keys(groups).forEach( (key) => {
       const licenseGroup: LicenseGroup = groups[key];
-      _w(`${key} (${licenseGroup.count})\n`);
-      _w(S3);
+      options.report.write(`${key} (${licenseGroup.count})\n`);
+      options.report.write(S3);
       licenseGroup.dependencies.forEach( (d) =>
-        _w(`${d.gav.groupId}:${d.gav.groupId}:${d.gav.version}\n`));
-      _w(S2);
-      _w(NL);
+        options.report.write(`${d.gav.groupId}:${d.gav.groupId}:${d.gav.version}\n`));
+      options.report.write(S2);
+      options.report.write(NL);
     });
 
     options.report.end(cb);
