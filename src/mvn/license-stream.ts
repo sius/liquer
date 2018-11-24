@@ -41,12 +41,16 @@ function _findLicense(d: Dependency, options: StreamOptions, cb: (license: Licen
       , artifactId: pom.project.parent.artifactId
       , version: pom.project.parent.version
     };
-    options.repoDb.findOne(parentGAV, (err: Error, parent: Dependency) => {
+    options.repoDb.findOne({ gav: parentGAV }, (err: Error, parent: Dependency) => {
       if (err) {
         options.log.write(err.message);
       }
       if (parent) {
-        _findLicense(parent, options, cb);
+        if (parent.bestLicense.name || parent.bestLicense.url) {
+          cb({ ...parent.bestLicense });
+        } else {
+          _findLicense(parent, options, cb);
+        }
       } else {
         cb(null);
       }
@@ -61,8 +65,10 @@ function licenseStream(options: StreamOptions) {
   return (dependency: Dependency, cb: (err?: Error, dependency?: Dependency) => void) => {
     _findLicense(dependency, options, (license) => {
       if (license) {
-        dependency.bestLicense.name = license.name;
-        if (dependency.bestLicense.url === null) {
+        if (!dependency.bestLicense.name) {
+          dependency.bestLicense.name = license.name;
+        }
+        if (!dependency.bestLicense.url) {
           dependency.bestLicense.url = license.url;
         }
       }

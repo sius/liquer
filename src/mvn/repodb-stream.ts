@@ -4,15 +4,11 @@ import { Dependency } from './dependency';
 function repoDbStream(options: StreamOptions) {
 
   return (d: Dependency, cb: (err?: Error, d?: Dependency) => void) => {
-    options.repoDb.update({ _id: d._id }, d, { upsert: true, returnUpdatedDocs: true } as Nedb.UpdateOptions, (err: Error, docs: any, upsert) => {
+    options.repoDb.update({ _id: d._id }, d, { upsert: true, returnUpdatedDocs: true } as Nedb.UpdateOptions, (err: Error, n: number, doc, upsert) => {
       if (err) {
-        console.error(err);
+        options.log.write(err.message);
       }
-      if (docs.length > 0) {
-        cb(null, docs[0]);
-      } else {
-        cb();
-      }
+      cb(null, doc);
     });
   };
 }

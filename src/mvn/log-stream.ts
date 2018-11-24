@@ -28,7 +28,6 @@ function licenseLogStream(options: StreamOptions) {
     } else {
       cb();
     }
-
   };
 }
 

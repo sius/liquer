@@ -4,6 +4,7 @@ import * as Nedb from 'nedb';
 import { resolve } from 'path';
 import { Dependency } from '../mvn/dependency';
 import { getLicenseAtUrl } from '../mvn/pom-stream';
+import { licensesGroupedByCount, LicenseGroup } from '../mvn/report';
 
 describe('repoDb', () => {
 
@@ -19,7 +20,17 @@ describe('repoDb', () => {
     });
   });
 
-  it.only('should match license url', (done) => {
+  it.only('should group the license data for the report', (done) => {
+    repoDb.find({}).sort({ 'bestLicense.name': 1, 'bestLicense.url': 1 }).exec((_err: Error, dependencies: Dependency[]) => {
+      const res: Map<string, LicenseGroup> = licensesGroupedByCount(dependencies);
+      Object.keys(res).forEach( (key) => {
+        const licenseGroup: LicenseGroup = res[key];
+        console.log(`${key}: ${licenseGroup.count}\n`);
+      });
+    });
+  });
+
+  it('should match license url', (done) => {
     const test = `
 ~ Copyright (c) 2007-2011 Sonatype, Inc. All rights reserved.
 ~

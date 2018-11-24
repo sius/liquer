@@ -14,8 +14,13 @@ argv
   })
   .option('output', {
     alias: ['o'],
-    describe: `The output file.`,
+    describe: `The log output file.`,
     default: 'log.txt'
+  })
+  .option('report', {
+    alias: ['r'],
+    describe: `The report file.`,
+    default: 'report.txt'
   })
   .help('help')
   //.coerce(['schema', 'json-schema-faker', 'output'], path.resolve)

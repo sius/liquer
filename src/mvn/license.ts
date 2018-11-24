@@ -1,4 +1,5 @@
 export interface License {
+  title?: string;
   name?: string;
   spdx?: string;
   url?: string;

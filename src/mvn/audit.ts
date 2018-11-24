@@ -8,7 +8,7 @@ import { licenseStream } from './license-stream';
 import { logStream } from './log-stream';
 import { repoDbStream } from './repodb-stream';
 import { Dependency } from './dependency';
-import { readFile } from 'fs';
+import { report } from './report';
 
 function _runGoal(options: MavenOptions) {
 
@@ -21,14 +21,7 @@ function _runGoal(options: MavenOptions) {
 
     spawn('mvn', opts.args)
       .stdout
-      .pipe(split())
-      .pipe(map(dependencyStream(opts)))
-      .pipe(map(pomStream(opts)))
-      .pipe(map(licenseStream(opts)))
-      .pipe(map(repoDbStream(opts)))
-      .pipe(map(logStream(opts)))
       .on('end', () => {
-
         opts.repoDb.find({
           'bestLicense.name': null,
           'bestLicense.url': null
@@ -36,18 +29,27 @@ function _runGoal(options: MavenOptions) {
           if (_err) {
             opts.log.write(_err.message);
           }
+          console.log(`Update ${docs.length} license info(s)`);
           readArray(docs)
             .pipe(map(licenseStream(opts)))
             .pipe(map(repoDbStream(opts)))
             .pipe(map(logStream(opts)))
             .on('end', () => {
-              opts.log.close();
-              console.log('done');
-              process.exit(0);
+              report(opts, () => {
+                opts.log.close();
+                console.log('done');
+                process.exit(0);
+              });
             })
             .pipe(process.stdout);
         });
       })
+      .pipe(split())
+      .pipe(map(dependencyStream(opts)))
+      .pipe(map(pomStream(opts)))
+      .pipe(map(licenseStream(opts)))
+      .pipe(map(repoDbStream(opts)))
+      .pipe(map(logStream(opts)))
       .pipe(process.stdout);
   });
 }

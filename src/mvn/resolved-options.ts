@@ -18,6 +18,8 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
   private _licenseDbFilename: string;
   private _logPath: string;
   private _log: WriteStream;
+  private _reportPath: string;
+  private _report: WriteStream;
 
   constructor(private options: MavenOptions, cb: (error?: Error, options?: ResolvedOptions) => void) {
     this._scanTimeStamp = new Date();
@@ -36,7 +38,9 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
         this._dependencyDbFilename = resolve(this._scanPath, `dependency.db`);
         this._licenseDbFilename = resolve(this._scanPath, `license.db`);
         this._logPath = resolve(this._scanPath, this.logFile);
+        this._reportPath = resolve(this._scanPath, this.reportFile);
         this._log = createWriteStream(this._logPath, { flags: 'a+' });
+        this._report = createWriteStream(this._reportPath, { flags: 'a+' });
         this._repoDb = new Nedb({ filename: this._repoDbFilename, autoload: true });
         this._licenseDb = new Nedb({ filename: this._licenseDbFilename, autoload: true });
         this._dependencyDb = new Nedb({ filename: this._dependencyDbFilename, autoload: true });
@@ -61,6 +65,9 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
   }
   get logFile() {
     return this.options.logFile;
+  }
+  get reportFile() {
+    return this.options.reportFile;
   }
   get scanDir() {
     return this._scanDir;
@@ -107,5 +114,8 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
   }
   get log(): WriteStream {
     return this._log;
+  }
+  get report(): WriteStream {
+    return this._report;
   }
 }

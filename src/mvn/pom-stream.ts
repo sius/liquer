@@ -1,10 +1,7 @@
 import { StreamOptions } from './stream-options';
 import { Dependency } from './dependency';
-import { join } from 'path';
 import { readFile } from 'fs';
 import { Parser } from 'xml2js';
-import { red } from 'colors';
-import { getUrls } from 'get-urls';
 
 const pomParser = new Parser({
   ignoreAttrs: true,
@@ -33,8 +30,6 @@ function getLicenseAtUrl(text): string {
       const matches = /(https?:\/\/[^\s<>]+)[\b\s]?/gim.exec(text.substring(p0));
       if (!!matches) {
         return matches[1];
-      } else {
-        console.log(red(text));
       }
     }
   }
@@ -53,11 +48,13 @@ function pomStream(options: StreamOptions)
           if (err2) {
             options.log.write(err2.message);
           }
-          const text = _grabFirstComment(xml);
+          const name: string = null;
+          const title: string = null;
+          const text: string = _grabFirstComment(xml);
           const url: string = getLicenseAtUrl(text);
 
           dependency.pom = pom;
-          dependency.bestLicense = { name: null , url, text };
+          dependency.bestLicense = { name, title , url, text };
           cb(err, dependency);
         });
       } else {

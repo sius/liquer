@@ -8,6 +8,7 @@ exports.describe = 'Start the dependency audit.';
 exports.handler =  (argv) => {
   const options: MavenOptions = {
     file: resolve(__dirname, argv.file),
+    reportFile: resolve(__dirname, argv.reportFile),
     goal: 'dependency:go-offline'
   };
   audit(options);
