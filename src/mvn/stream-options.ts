@@ -9,5 +9,7 @@ export interface StreamOptions {
   remoteRepo: string;
   localRepo: string;
   log: WriteStream;
+  logPath: string;
   report: WriteStream;
+  reportPath: string;
 }

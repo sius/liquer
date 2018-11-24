@@ -41,7 +41,7 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
         this._reportPath = resolve(this._scanPath, this.reportFile);
         this._log = createWriteStream(this._logPath, { flags: 'a+' });
         this._report = createWriteStream(this._reportPath, { flags: 'a+' });
-        this._repoDb = new Nedb({ filename: this._repoDbFilename, autoload: true });
+        this._repoDb = new Nedb({ filename: this._repoDbFilename, autoload: true } );
         this._licenseDb = new Nedb({ filename: this._licenseDbFilename, autoload: true });
         this._dependencyDb = new Nedb({ filename: this._dependencyDbFilename, autoload: true });
         cb(null, this);
@@ -112,8 +112,14 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
     args.push(this.goal);
     return args;
   }
+  get logPath(): string {
+    return this._logPath;
+  }
   get log(): WriteStream {
     return this._log;
+  }
+  get reportPath(): string {
+    return this._reportPath;
   }
   get report(): WriteStream {
     return this._report;

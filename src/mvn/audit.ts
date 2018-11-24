@@ -9,6 +9,7 @@ import { logStream } from './log-stream';
 import { repoDbStream } from './repodb-stream';
 import { Dependency } from './dependency';
 import { report } from './report';
+import { green, underline } from 'colors';
 
 function _runGoal(options: MavenOptions) {
 
@@ -35,10 +36,14 @@ function _runGoal(options: MavenOptions) {
             .pipe(map(repoDbStream(opts)))
             .pipe(map(logStream(opts)))
             .on('end', () => {
-              report(opts, () => {
-                opts.log.close();
-                console.log('done');
-                process.exit(0);
+              opts.repoDb.persistence.compactDatafile();
+              (opts.repoDb as any).on('compaction.done', () => {
+                report(opts, () => {
+                  opts.log.close();
+                  console.log(`${green('( done )')}: ${underline(opts.reportPath)}`);
+
+                  process.exit(0);
+                });
               });
             })
             .pipe(process.stdout);

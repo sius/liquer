@@ -18,7 +18,7 @@ function dependencyStream(options: StreamOptions): (line: string, cb: (err: Erro
     if (matches) {
       const downloaded = matches[1];
       const filepath   = matches[2];
-      const type   = matches[3];
+      const type       = matches[3];
       const parts      = filepath.split('/');
       const filename   = parts.pop();
       const version    = parts.pop();

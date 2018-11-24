@@ -6,7 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "start": "tsc && node dist/index",
-    "test": "mocha --timeoutt 10000 -r ts-node/register src/test/**/*.spec.ts"
+    "test": "mocha --timeout 10000 -r ts-node/register src/test/**/*.spec.ts"
   },
   "bin": {
     "fakerdb": "dist/bin/dpd.js"

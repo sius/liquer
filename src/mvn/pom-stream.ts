@@ -27,7 +27,7 @@ function getLicenseAtUrl(text): string {
   if (text) {
     const p0 = text.indexOf('License');
     if (p0 > -1) {
-      const matches = /(https?:\/\/[^\s<>]+)[\b\s]?/gim.exec(text.substring(p0));
+      const matches = /(https?:\/\/[^\s<>]+)[\b]?/gim.exec(text.substring(p0));
       if (!!matches) {
         return matches[1];
       }

@@ -4,7 +4,7 @@ import * as Nedb from 'nedb';
 import { resolve } from 'path';
 import { Dependency } from '../mvn/dependency';
 import { getLicenseAtUrl } from '../mvn/pom-stream';
-import { licensesGroupedByCount, LicenseGroup } from '../mvn/report';
+import { licensesGroupMap, LicenseGroupMap, LicensedDependencies, LicenseName } from '../mvn/report';
 
 describe('repoDb', () => {
 
@@ -20,13 +20,24 @@ describe('repoDb', () => {
     });
   });
 
-  it.only('should group the license data for the report', (done) => {
+  it('should group the license data for the report', (done) => {
     repoDb.find({}).sort({ 'bestLicense.name': 1, 'bestLicense.url': 1 }).exec((_err: Error, dependencies: Dependency[]) => {
-      const res: Map<string, LicenseGroup> = licensesGroupedByCount(dependencies);
-      Object.keys(res).forEach( (key) => {
-        const licenseGroup: LicenseGroup = res[key];
-        console.log(`${key}: ${licenseGroup.count}\n`);
+      const licenseGroupMap: LicenseGroupMap = licensesGroupMap(dependencies);
+      assert(licenseGroupMap !== null);
+      Object.keys(licenseGroupMap).forEach( (licenseName: LicenseName) => {
+        const licensedDependencies: LicensedDependencies = licenseGroupMap[licenseName];
+        console.log(`${licenseName}: ${licensedDependencies.count}`);
       });
+      done();
+    });
+  });
+
+  it.only('should find dublettes', (done) => {
+    const gav = 'org.ow2.asm:asm:6.2'.split(':');
+    repoDb.find({ type: 'pom', 'gav.groupId': gav[0], 'gav.artifactId': gav[1], 'gav.version': gav[2] }, (_err: Error, dependencies: Dependency[]) => {
+      console.log(dependencies.length);
+      console.log(dependencies.map((_) => _._id));
+      done();
     });
   });
 
