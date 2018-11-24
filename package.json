@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "start": "tsc && node dist/index",
+    "start": "tsc && daudit mvn",
     "test": "mocha --timeout 10000 -r ts-node/register src/test/**/*.spec.ts"
   },
   "bin": {
-    "fakerdb": "dist/bin/dpd.js"
+    "daudit": "dist/bin/daudit.js"
   },
   "author": "sius",
   "license": "MIT",

@@ -1,12 +1,10 @@
 #!/usr/bin/env node
-
-let argv = require('yargs')
-  , path = require('path');
-
+const argv = require('yargs');
 argv
   .option('file', {
     alias: ['f','inpit','i'],
     describe: `The input file`,
+    default: 'pom.xml'
   })
   .option('settings', {
     alias: ['s', 'config', 'c'],
@@ -23,10 +21,10 @@ argv
     default: 'report.txt'
   })
   .help('help')
-  //.coerce(['schema', 'json-schema-faker', 'output'], path.resolve)
-  .command(require('./cmds/audit'))
+  .command(require('./cmds/mvn'))
   .demandCommand()
   .wrap(100)
-  .epilog('For more information about dependency-audit, find out README at https://github.com/sius/dependency-audit')
-  .example('dpd audit -f pom.xml', `Download dependencies to go offline and retrieve license information`)
+  .epilog('More informations about dependency-audit: https://github.com/sius/dependency-audit')
+  .example('daudit mvn', `Download Maven dependencies to go offline and create a License report`)
+  .example('daudit mvn -f pom.xml', `Download Maven dependencies to go offline and create a License report`)
   .argv;

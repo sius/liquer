@@ -60,7 +60,5 @@ function _runGoal(options: MavenOptions) {
 }
 
 export function audit(options?: MavenOptions) {
-  _runGoal({ ...MAVEN_OPTIONS, ...options, file: 'pom.xml' });
+  _runGoal({ ...MAVEN_OPTIONS, ...options });
 }
-
-audit();

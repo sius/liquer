@@ -2,13 +2,13 @@ import { resolve } from 'path';
 import { audit } from '../../mvn/audit';
 import { MavenOptions } from '../../mvn/maven-options';
 
-exports.command  = 'audit';
-exports.aliases = ['a'];
-exports.describe = 'Start the dependency audit.';
+exports.command  = 'mvn';
+exports.aliases = ['maven'];
+exports.describe = 'Download Maven dependencies and create a License report';
 exports.handler =  (argv) => {
   const options: MavenOptions = {
-    file: resolve(__dirname, argv.file),
-    reportFile: resolve(__dirname, argv.reportFile),
+    file: argv.file,
+    reportFile: argv.report,
     goal: 'dependency:go-offline'
   };
   audit(options);
