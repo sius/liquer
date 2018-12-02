@@ -9,7 +9,7 @@ const pomParser = new Parser({
   tagNameProcessors: [(name) => name.replace(/\./g, '_')]
 });
 
-function _grabFirstComment(xmlStr): string|null {
+function _grabFirstComment(xmlStr): string | null {
   let ret = null;
   if (!xmlStr) {
     return null;
@@ -36,10 +36,10 @@ function getLicenseAtUrl(text): string {
   return null;
 }
 function pomStream(options: StreamOptions)
-: (dependency: Dependency, cb: (err: Error, data: Dependency) => void) => void {
+  : (dependency: Dependency, cb: (err: Error, data: Dependency) => void) => void {
 
   return (dependency: Dependency, cb: (err?: Error, dependency?: Dependency) => void) => {
-    readFile(dependency.pomfile, { encoding: 'utf8', flag: 'r'}, (err: Error, xml: string) => {
+    readFile(dependency.pomfile, { encoding: 'utf8', flag: 'r' }, (err: Error, xml: string) => {
       if (err) {
         options.log.write(err.message);
       }
@@ -54,7 +54,7 @@ function pomStream(options: StreamOptions)
           const url: string = getLicenseAtUrl(text);
 
           dependency.pom = pom;
-          dependency.bestLicense = { name, title , url, text };
+          dependency.bestLicense = { name, title, url, text };
           cb(err, dependency);
         });
       } else {
