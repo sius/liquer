@@ -1,16 +1,16 @@
 {
-  "name": "dependency-audit",
+  "name": "liquer",
   "version": "1.0.0",
-  "description": "change name to liquer (aka: license query)",
+  "description": "license query cli",
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
     "schema": "tsc && node dist/db/schema/json/jsonSchema",
-    "start": "tsc && daudit mvn",
+    "start": "tsc && liquer mvn",
     "test": "mocha --timeout 10000 -r ts-node/register src/test/**/*.spec.ts"
   },
   "bin": {
-    "daudit": "dist/bin/daudit.js"
+    "liquer": "dist/bin/liquer.js"
   },
   "author": "sius",
   "license": "MIT",
