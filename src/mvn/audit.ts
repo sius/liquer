@@ -10,7 +10,8 @@ import { repoDbStream } from './repodb-stream';
 import { Dependency } from './dependency';
 import { report } from './report';
 import { green, underline } from 'colors';
-
+import { mvn } from './utils';
+import { updateScope } from './updateScope';
 function _runGoal(options: MavenOptions) {
 
   new ResolvedOptions(options, (err, opts) => {
@@ -20,29 +21,27 @@ function _runGoal(options: MavenOptions) {
       return;
     }
 
-    spawn('mvn', opts.args)
+    spawn(mvn, opts.args)
       .stdout
       .on('end', () => {
-        opts.repoDb.find({
-          'bestLicense.name': null,
-          'bestLicense.url': null
-        }, (_err: Error, docs: Dependency[]) => {
+        opts.repoDb.find({}, (_err: Error, docs: Dependency[]) => {
           if (_err) {
             opts.log.write(_err.message);
           }
-          console.log(`Update ${docs.length} license info(s)`);
+          console.log(`Updating ${docs.length} dependencies`);
           readArray(docs)
             .pipe(map(licenseStream(opts)))
             .pipe(map(repoDbStream(opts)))
             .pipe(map(logStream(opts)))
             .on('end', () => {
-              opts.repoDb.persistence.compactDatafile();
-              (opts.repoDb as any).on('compaction.done', () => {
-                report(opts, () => {
-                  opts.log.close();
-                  console.log(`${green('( done )')}: ${underline(opts.reportPath)}`);
-
-                  process.exit(0);
+              updateScope(opts, (opts2) => {
+                opts.repoDb.persistence.compactDatafile();
+                (opts.repoDb as any).on('compaction.done', () => {
+                  report(opts, () => {
+                    opts.log.close();
+                    console.log(`${green('( done )')}: ${underline(opts.reportPath)}`);
+                    process.exit(0);
+                  });
                 });
               });
             })
