@@ -59,10 +59,10 @@ function _ftostr(
   , cb: any): void {
   if (filename) {
     readFile(filename, 'utf8', (err, data) => {
-      if (err) {
-        o.log.write(err.message);
-      }
-      cb(null, data);
+    if (err) {
+      o.log.write(err.message);
+    }
+    cb(null, data);
     });
   } else {
     cb(null, null);
@@ -81,6 +81,7 @@ function _pom(
           if (err2) {
             // options.logFile.write(`${err2}\n`);
           }
+
           const names = [];
           const title = null;
           const text = _grabFirstComment(xml);

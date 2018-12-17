@@ -2,7 +2,9 @@ import * as Nedb from 'nedb';
 import { WriteStream } from 'fs';
 
 export interface StreamOptions {
+  goal: string;
   settings: string;
+  destPom: string;
   repoDb: Nedb;
   licenseDb: Nedb;
   dependencyDb: Nedb;

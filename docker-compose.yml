@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mongo:
+    container_name: liquerDb
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - ENV=development
+
+  fossology:
+    container_name: liquer_fossology
+    image: fossology/fossology
+    ports:
+      - "8081:80"
+    environment:
+      - ENV=development

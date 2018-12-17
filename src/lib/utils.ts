@@ -1,5 +1,8 @@
 import { Writable } from 'stream';
 import * as moment from 'moment';
+import * as os from 'os';
+
+export const mvn = /^Windows_NT/.test(os.type()) ? 'mvn.cmd' : 'mvn';
 
 export function isArray(obj: any): boolean {
   return (!!obj) && (obj.constructor === Array);

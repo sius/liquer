@@ -10,10 +10,10 @@ import * as path from 'path';
 function dependencyStream(options: StreamOptions): (line: string, cb: (err: Error, data: any) => void) => void {
 
   const downloadedPattern = new RegExp(`Downloaded\.*: (${options.remoteRepo}/(.+\.(pom|jar|war|ear|rar|zip)))`);
-  const errorPattern = /\[Error\]:\s*(.+)/i;
 
+  const errorPattern = /\[ERROR\]\s+(.+)$/i;
+  const warningPattern = /\[WARNING\]\s+(.+)$/i;
   return (line: string, cb: (err?: Error, data?: MavenDependency) => void) => {
-
     const matches = downloadedPattern.exec(line);
     if (matches) {
       const tool = 'mvn';
@@ -45,7 +45,7 @@ function dependencyStream(options: StreamOptions): (line: string, cb: (err: Erro
     } else {
       const err = errorPattern.exec(line);
       if (err) {
-        // options.log.write(err[0]);
+        options.log.write(err[0]);
       }
       cb();
     }

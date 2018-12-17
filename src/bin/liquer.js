@@ -1,25 +1,30 @@
 #!/usr/bin/env node
-const argv = require('yargs')
-  , findUp = require('find-up')
-  , fs = require('fs')
-  , configPath = findUp.sync(['.liq', '.liq.json'])
-  , config = configPath ? JSON.parse(fs.readFileSync(configPath)) : {}
+const argv = require('yargs');
 argv
-  .config(config)
-  .usage('liq <command> [args]')
-  .help('help')
-  .option('log-file', {
-      alias: 'l'
-    , describe: `log file.`
-    , default: 'log.txt'
-    , type: 'string'
+  .option('file', {
+    alias: ['f','inpit','i'],
+    describe: `The input file`,
+    default: 'pom.xml'
   })
-  .demandCommand()
-  .command(require('./cmds/doctor'))
+  .option('settings', {
+    alias: ['s', 'config', 'c'],
+    describe: `settings/configuration file`,
+  })
+  .option('output', {
+    alias: ['o'],
+    describe: `The log output file.`,
+    default: 'log.txt'
+  })
+  .option('report', {
+    alias: ['r'],
+    describe: `The report file.`,
+    default: 'report.txt'
+  })
+  .help('help')
   .command(require('./cmds/mvn'))
-  //.commandDir('cmds')
+  .demandCommand()
   .wrap(100)
-  .epilog(`DON'T DRINK AND DRIVE!\nDo not use un- or intentionally unauthorized dependencies that could harm your business!\nMore informations about liquer see: https://liquer.io`)
-  .example(`liq doctor`, `Test your installation`)
-  .example(`liq mvn audit`, `Retrieve the Maven dependencies to go offline`)
+  .epilog('More informations about dependency-audit: https://github.com/sius/dependency-audit')
+  .example('daudit mvn', `Download Maven dependencies to go offline and create a License report`)
+  .example('daudit mvn -f pom.xml', `Download Maven dependencies to go offline and create a License report`)
   .argv;
