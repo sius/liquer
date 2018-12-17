@@ -12,4 +12,7 @@ export interface StreamOptions {
   logPath: string;
   report: WriteStream;
   reportPath: string;
+  extTxtFiles: boolean;
+  extDir: string;
+  extPath: string;
 }

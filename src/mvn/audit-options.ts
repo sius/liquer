@@ -1,5 +1,5 @@
-export interface MavenOptions {
-  wd?: string;
+export interface AuditOptions {
+  workingDir?: string;
   goal?: string;
   file?: string;
   logFile?: string;
@@ -7,11 +7,13 @@ export interface MavenOptions {
   settings?: string;
   localRepoDir?: string;
   remoteRepo?: string;
-  mavenProfile?: string;
+  profile?: string;
+  extTxtFiles?: boolean;
+  extDir?: string;
 }
 
-export const MAVEN_OPTIONS: MavenOptions = {
-    wd: 'audit'
+export const MAVEN_OPTIONS: AuditOptions = {
+    workingDir: 'audit'
   , goal: 'dependency:go-offline'
   , file: 'pom.xml'
   , reportFile: 'report.txt'
@@ -19,4 +21,6 @@ export const MAVEN_OPTIONS: MavenOptions = {
   , remoteRepo: 'https://repo.maven.apache.org/maven2'
   , logFile: 'log.txt'
   , settings: null
+  , extTxtFiles: true
+  , extDir: 'ext'
 };
