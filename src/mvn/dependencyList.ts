@@ -3,7 +3,7 @@ import { split, map } from 'event-stream';
 import { magenta } from 'colors';
 import { StreamOptions } from './stream-options';
 import { GATVS } from './gatvs';
-import { mvn } from './utils';
+import { mvn } from '../lib/utils';
 const PATTERN  = /\[INFO\]\s{4}([^:]+):([^:]+):([^:]+):([^:]+):(compile|runtime|test)$/;
 
 /**
