@@ -1,5 +1,5 @@
 import { StreamOptions } from './stream-options';
-import { Dependency } from './dependency';
+import { MavenDependency } from './maven-dependency';
 import { License } from './license';
 
 const S1 = '###########################################\n';
@@ -14,12 +14,12 @@ export type LicensedDependencies = {
   useLicenseText: boolean;
   license: License;
   count: ArtifactCount;
-  dependencies: Dependency[];
+  dependencies: MavenDependency[];
 };
 export type LicenseGroupMap = Map<LicenseName, LicensedDependencies>;
 
-export function licensesGroupMap(dependencies: Dependency[]): LicenseGroupMap {
-  const licensedDependencies: LicensedDependencies[] = dependencies.map( (d: Dependency) => {
+export function licensesGroupMap(dependencies: MavenDependency[]): LicenseGroupMap {
+  const licensedDependencies: LicensedDependencies[] = dependencies.map( (d: MavenDependency) => {
     const name = d.bestLicense.name || d.bestLicense.url || (!!d.bestLicense.text ? 'License text' : 'UNDEFINED');
     return {
         name
@@ -43,7 +43,7 @@ export function licensesGroupMap(dependencies: Dependency[]): LicenseGroupMap {
 
 export function report(options: StreamOptions, cb: () => void) {
 
-  options.repoDb.find({type: 'pom'}).sort({ 'bestLicense.name': 1, 'bestLicense.url': 1 }).exec((_err: Error, dependencies: Dependency[]) => {
+  options.repoDb.find({type: 'pom'}).sort({ 'bestLicense.name': 1, 'bestLicense.url': 1 }).exec((_err: Error, dependencies: MavenDependency[]) => {
     const totalCount: ArtifactCount = dependencies.length;
     const licenseGroupMap: LicenseGroupMap = licensesGroupMap(dependencies);
 
@@ -62,11 +62,11 @@ export function report(options: StreamOptions, cb: () => void) {
       options.report.write(`${licenseName} (${licensedDependencies.count})\n`);
       options.report.write(S3);
 
-      licensedDependencies.dependencies.sort((a: Dependency, b: Dependency) => {
+      licensedDependencies.dependencies.sort((a: MavenDependency, b: MavenDependency) => {
         const agav = `${a.gav.groupId}:${a.gav.artifactId}:${a.gav.version}`;
         const bgav = `${b.gav.groupId}:${b.gav.artifactId}:${b.gav.version}`;
         return agav > bgav ? 1 : -1;
-      }).forEach( (d: Dependency) => {
+      }).forEach( (d: MavenDependency) => {
         const dgav = `${d.gav.groupId}:${d.gav.artifactId}:${d.gav.version}`;
         if (licensedDependencies.useLicenseText) {
           options.report.write(S3);

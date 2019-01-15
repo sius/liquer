@@ -1,11 +1,12 @@
-import { MavenOptions } from './maven-options';
+import { AuditOptions } from './audit-options';
 import { resolve, basename } from 'path';
 import * as Nedb from 'nedb';
 import * as moment from 'moment';
 import { StreamOptions } from './stream-options';
+import { timestamp } from '../lib/utils';
 import { createWriteStream, WriteStream, ensureDir, copyFile } from 'fs-extra';
 
-export class ResolvedOptions implements MavenOptions, StreamOptions {
+export class ResolvedOptions implements AuditOptions, StreamOptions {
 
   private _scanDir: string;
   private _scanTimeStamp: Date;
@@ -20,16 +21,18 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
   private _log: WriteStream;
   private _reportPath: string;
   private _report: WriteStream;
+  private _extPath: string;
 
-  constructor(private options: MavenOptions, cb: (error?: Error, options?: ResolvedOptions) => void) {
+  constructor(private options: AuditOptions, cb: (error?: Error, options?: ResolvedOptions) => void) {
     this._scanTimeStamp = new Date();
-    this._scanDir = `mvn-scan-${moment(this._scanTimeStamp).format('YYYYMMDD-HHmmss-SSS')}`;
-    this._scanPath = resolve(this.wd, this._scanDir);
+    this._scanDir = `mvn-scan-${timestamp(this._scanTimeStamp)}`;
+    this._scanPath = resolve(this.workingDir, this._scanDir);
 
     ensureDir(this._scanPath, (err) => {
       if (err) {
          cb(err);
       }
+
       copyFile(this.srcPom, this.destPom, (err2: Error) => {
         if (err2) {
           cb(err2);
@@ -39,23 +42,24 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
         this._licenseDbFilename = resolve(this._scanPath, `license.db`);
         this._logPath = resolve(this._scanPath, this.logFile);
         this._reportPath = resolve(this._scanPath, this.reportFile);
+        this._extPath = resolve(this._scanPath, this.extDir);
         this._log = createWriteStream(this._logPath, { flags: 'a+' });
         this._report = createWriteStream(this._reportPath, { flags: 'a+' });
         this._repoDb = new Nedb({ filename: this._repoDbFilename, autoload: true } );
-        this._licenseDb = new Nedb({ filename: this._licenseDbFilename, autoload: true });
-        this._dependencyDb = new Nedb({ filename: this._dependencyDbFilename, autoload: true });
+        // this._licenseDb = new Nedb({ filename: this._licenseDbFilename, autoload: true });
+        // this._dependencyDb = new Nedb({ filename: this._dependencyDbFilename, autoload: true });
         cb(null, this);
       });
     });
   }
-  get wd() {
-    return this.options.wd;
+  get workingDir() {
+    return this.options.workingDir;
   }
   get goal() {
     return this.options.goal;
   }
-  get mavenProfile() {
-    return this.options.mavenProfile;
+  get profile() {
+    return this.options.profile;
   }
   get remoteRepo() {
     return this.options.remoteRepo;
@@ -93,6 +97,16 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
   get dependencyDb() {
     return this._dependencyDb;
   }
+  get extTxtFiles(): boolean {
+    return this.options.extTxtFiles;
+  }
+  get extDir(): string {
+    return this.options.extDir;
+  }
+  get extPath(): string {
+    return this._extPath;
+  }
+
   get args(): string[] {
     const args: string[] = [];
     if (this.settings && this.settings.length > 0) {
@@ -103,8 +117,8 @@ export class ResolvedOptions implements MavenOptions, StreamOptions {
       args.push('-f');
       args.push(this.destPom);
     }
-    if (this.mavenProfile && this.mavenProfile.length > 0) {
-      args.push(`-P${this.mavenProfile}`);
+    if (this.profile && this.profile.length > 0) {
+      args.push(`-P${this.profile}`);
     }
     if (this.localRepo && this.localRepo.length > 0) {
       args.push(`-Dmaven.repo.local=${this.localRepo}`);

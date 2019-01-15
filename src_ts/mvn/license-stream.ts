@@ -1,5 +1,5 @@
 import { StreamOptions } from './stream-options';
-import { Dependency } from './dependency';
+import { MavenDependency } from './maven-dependency';
 import { License } from './license';
 import { GAV } from './gav';
 
@@ -20,7 +20,7 @@ function _hasParent(pom: any) {
     && pom.project.parent);
 }
 
-function _findLicense(d: Dependency, options: StreamOptions, cb: (license: License) => void) {
+function _findLicense(d: MavenDependency, options: StreamOptions, cb: (license: License) => void) {
   let license: License = d.bestLicense;
   const pom = d.pom;
   if (_hasLicenseNode(pom)) {
@@ -41,7 +41,7 @@ function _findLicense(d: Dependency, options: StreamOptions, cb: (license: Licen
       , artifactId: pom.project.parent.artifactId
       , version: pom.project.parent.version
     };
-    options.repoDb.findOne({ gav: parentGAV }, (err: Error, parent: Dependency) => {
+    options.repoDb.findOne({ gav: parentGAV }, (err: Error, parent: MavenDependency) => {
       if (err) {
         options.log.write(err.message);
       }
@@ -62,7 +62,7 @@ function _findLicense(d: Dependency, options: StreamOptions, cb: (license: Licen
 
 function licenseStream(options: StreamOptions) {
 
-  return (dependency: Dependency, cb: (err?: Error, dependency?: Dependency) => void) => {
+  return (dependency: MavenDependency, cb: (err?: Error, dependency?: MavenDependency) => void) => {
     _findLicense(dependency, options, (license) => {
       if (license) {
         if (!dependency.bestLicense.name) {
