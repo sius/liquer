@@ -1,0 +1,22 @@
+<% let i = 1;
+	licenseGroups.forEach( (g) => { -%>
+	<% g.dependencies.forEach( (d) => { %>
+<%-i++ %>. <%- d.fullname %>
+
+	- Homepage:               (Source: package.json)
+		<%- d.package.homepage %>
+
+	- License:                (Source: package.json)
+		<%- d.license.raw %>
+
+	- SPDX License:           (Source: internal lookup table)
+		<% if (d.license.resolved) { -%>   
+		<%- d.license.resolved.spdx %>
+		<% } -%>
+
+	- License text:           (Source: <%- d.license.file %>)
+		<% if (d.license.text) { -%>
+		<%- d.license.text %>
+		<% } -%>
+	<% }); -%>
+<% }); -%>

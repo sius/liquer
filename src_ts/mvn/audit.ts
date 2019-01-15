@@ -9,7 +9,6 @@ import { logStream } from './log-stream';
 import { repoDbStream } from './repodb-stream';
 import { Dependency } from './dependency';
 import { report } from './report';
-import { green, underline } from 'colors';
 import { mvn } from './utils';
 import { updateScope } from './updateScope';
 function _runGoal(options: MavenOptions) {
@@ -39,7 +38,6 @@ function _runGoal(options: MavenOptions) {
                 (opts.repoDb as any).on('compaction.done', () => {
                   report(opts, () => {
                     opts.log.close();
-                    console.log(`${green('( done )')}: ${underline(opts.reportPath)}`);
                     process.exit(0);
                   });
                 });

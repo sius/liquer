@@ -1,0 +1,33 @@
+License Query
+<%- description %>
+
+1  File types
+------------------------------------------------------
+<%- include('_typeCounter', { typeCounter }); -%>
+
+
+2   Dependencies (<%- dependencies.length %>)
+------------------------------------------------------ 
+<%- include('_dependencies', { dependencies }); -%>
+
+
+3   Licenses
+3.1 Overview
+------------------------------------------------------
+<%- include('_licenseCounter', { licenseCounter }); -%>
+
+
+3.2 Dependencies grouped by license
+------------------------------------------------------
+<%- include('_licenseGroups', {licenseGroups: licenseGroups}); -%>
+
+
+4   License details
+------------------------------------------------------
+  * Lizenz
+  * SPDX Lizenzname
+  * Lizens URL
+  * Kommentar
+  * Lizenztext
+------------------------------------------------------
+<%- include('_licenseDetails', { licenseGroups }); -%>

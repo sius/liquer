@@ -1,0 +1,22 @@
+Summary
+--------------------------------
+* Downloaded dependencies
+  - Runtime dependencies: <%- counter.runtimeDependencyCount %>
+  - Tool dependencies   : <%- counter.toolDependencyCount %>
+  
+                   Total: <%- counter.totalCount %>
+                   ============
+
+* Downloaded files
+  - 'jar' files         : <%- counter.jarCount %>
+  - 'pom' files         : <%- counter.pomCount %>
+  <% counter.otherTypesCount.forEach((other) => { -%>
+  - '<%- other.type %>' files         : <%- other.count %>
+  <% }); %>
+                   Total: <%- counter.totalCount %>
+                  ============
+
+Try to build your project offline with:
+------------------------------------------
+$ cd to/your/project/folder
+$ mvn install -o -Dmaven.repo.local="<%- localRepo %>"

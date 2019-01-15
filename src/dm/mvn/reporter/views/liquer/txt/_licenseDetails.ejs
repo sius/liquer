@@ -1,0 +1,28 @@
+<% let i = 1;
+	licenseGroups.forEach(function(g) { -%>
+	<% g.dependencies.forEach(function(d) { %>
+<%-i++ %>. <%- d.fullname %>
+
+	- License:                (Source: POM file)
+		<%- d.license.joinedNames %>
+
+	- SPDX License:           (Source: internal lookup table)    
+		<%- d.license.spdx %>
+
+	- License-URL:            (Source: POM file)  
+		<%- d.license.url %>
+
+	- Comment  :              (Source: POM file)
+		<%- d.license.comment %>
+			
+	- License text:
+		<% if (d.extractedFiles) { -%>
+			<% d.extractedFiles.forEach(function(file) { -%>
+				<% file.content.forEach(function(item) { -%>
+		(Source: <%- item.file %>)
+		<%- data %>
+				<% }); %>
+			<% }); -%>
+		<% } -%>
+	<% }); -%>
+<% }); -%>

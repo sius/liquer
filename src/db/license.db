@@ -1,0 +1,75 @@
+{"name":"COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0","version":"1.0","spdx":"CDDL-1.0","use":0,"url":[],"_id":"0WddsK8rK7UcLDC5"}
+{"name":"Apache License Version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"5clrSuwXlwwWr8vl"}
+{"name":"BSD 3-clause","version":"3","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"721eGU3pSuFUPTgh"}
+{"name":"BSD-3-Clause","version":"3","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"7c1eGU3rSuFUPTgh"}
+{"name":"BSD-3-clause","version":"3","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"7d1eGU3rSuFUPTgh"}
+{"name":"GNU Lesser General Public License","version":"2.0","spdx":"LGPL-2.0-only","use":0,"url":[],"_id":"9RCejGLSimdmb8V9"}
+{"name":"3-Clause BSD License","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"A0rnqsE4eCSso083"}
+{"name":"New BSD License","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"AxtgcM7guPTIpoov"}
+{"name":"CDDL/GPLv2+CE","version":"","spdx":"(CDDL-1.0 OR GPL-2.0-with-classpath-exception)","use":1,"url":[],"_id":"BBlALxSnC8RAf5cT"}
+{"name":"HSQLDB License, a BSD open source license","version":"","spdx":"","use":0,"_id":"BWBC4kbxDEhF3Mtw"}
+{"name":"ICU","version":"","spdx":"ICU","use":15,"_id":"BluNNvacp7r5yumu"}
+{"name":"ICU License","version":"","spdx":"ICU","use":15,"_id":"BluNXvacp7r5yumu"}
+{"name":"ISC","version":"","spdx":"ISC","use":15,"_id":"BluVNvacp7r5yumu"}
+{"name":"ISC License","version":"","spdx":"ISC","use":15,"_id":"BluZXvacp7r5yumu"}
+{"name":"Eclipse Distribution License (New BSD License)","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"EOTvWi63iPf46V2Q"}
+{"name":"Apache License, Version 2","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"FIgOlamp25zoy1RN"}
+{"name":"Bouncy Castle Licence","version":"","spdx":"","use":0,"url":[],"_id":"GqSuQUWj01mnlpkG"}
+{"name":"Google Cloud Software License","version":"","spdx":"","use":0,"url":[],"_id":"HgUyVXwMFt2VahxS"}
+{"name":"Apache License, version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"IPGm9yhzWx85lhUy"}
+{"name":"BSD 3-clause New License","version":"2.0","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"J7fWV1PdkhZjo5vs"}
+{"name":"CDDL License","version":"1.0","spdx":"CDDL-1.0","use":0,"url":[],"_id":"JN7GqsV0AFxVAAdu"}
+{"name":"Apache License, Version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"L3RJvXvPrZbfo9pL"}
+{"name":"The Apache License, Version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"LESqWK8htALSFAPo"}
+{"name":"The JSON License","version":"","spdx":"JSON","use":0,"url":[],"_id":"PXEvgEmpqswzdUlY"}
+{"name":"GNU Lesser General Public License (LGPL), version 2.1 or later","version":"2.1-or-later","spdx":"LGPL-2.1-or-later","use":0,"url":[],"_id":"Q8NiD1uAvElVgzTs"}
+{"name":"Eclipse Public License 1.0","version":"1.0","spdx":"EPL-1.0","use":0,"url":["http://www.eclipse.org/legal/epl-v10.html"],"_id":"QgwsQi0qRBNk9Wve"}
+{"name":"Public Domain, per Creative Commons CC0","version":"1.0","spdx":"CC0-1.0","use":0,"url":[],"_id":"QljeFA3MkmPMb8tF"}
+{"name":"CC0","version":"1.0","spdx":"CC0-1.0","use":0,"url":[],"_id":"RE8Muw1SxYzSuNo9"}
+{"name":"The GNU General Public License, Version 2","version":"2.0-only","spdx":"GPL-2.0-only","use":1,"url":[],"_id":"RbgE1stKQoPzXjHD"}
+{"name":"The (New) BSD License","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"RpWI8KvXvnSNMSFZ"}
+{"name":"The BSD 3-Clause License","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"S6GpewZERB69a4p4"}
+{"name":"Apache License","version":"","spdx":"","use":0,"url":[],"_id":"TtnJ4jzifx8FGk0R"}
+{"name":"Common Development and Distribution License (CDDL) v1.0","version":"10","spdx":"CDDL-1.0","use":0,"url":[],"_id":"XBkUC5h1rm4JxJ3q"}
+{"name":"The MIT License (MIT)","version":"","spdx":"MIT","use":15,"url":[],"_id":"XYzzqOzrzoEa1HIH"}
+{"name":"Eclipse Public License v2.0","version":"2.0","spdx":"EPL-2.0","use":0,"url":[],"_id":"YERMrrSNeXDUhZND"}
+{"name":"MIT","version":"","spdx":"MIT","use":15,"url":[],"_id":"ZPPz38Qqf0299pAS"}
+{"name":"The PostgreSQL License","version":"","spdx":"PostgreSQL","use":0,"url":[],"_id":"aO3cJT9orRvChyUT"}
+{"name":"ASF 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"aezF3LtZ0zyZAXKM"}
+{"name":"Lesser General Public License (LGPL)","version":"2.0-or-later","spdx":"LGPL-2.0-or-later","use":0,"url":[],"_id":"eDssxyPjydG69pS2"}
+{"name":"Apache 2.0","version":"2.0","spdx":"Apache-2.0","url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"use":15,"_id":"fVlORTIMSNSWtQ0W"}
+{"name":"BSD License","version":"","spdx":"BSD-4-Clause","use":0,"url":["http://www.opensource.org/licenses/bsd-license.php"],"_id":"fYiE3PG4CLU7vATF"}
+{"name":"LGPL 3.0 license","version":"3.0-only","spdx":"LGPL-3.0-only","use":0,"url":[],"_id":"fui8bKEioVbDdMg8"}
+{"name":"BSD","version":"","spdx":"BSD-4-Clause","use":0,"url":["http://www.opensource.org/licenses/bsd-license.php"],"_id":"gbMDuK7wzLc9ybCM"}
+{"name":"Eclipse 1.0","version":"1.0","spdx":"EPL-1.0","use":0,"url":["http://www.eclipse.org/legal/epl-v10.html"],"_id":"goXS66WDb9fphDX"}
+{"name":"Eclipse Public License, Version 1.0","version":"1.0","spdx":"EPL-1.0","use":0,"url":["http://www.eclipse.org/legal/epl-v10.html"],"_id":"goXS66WDb9fpkgDX"}
+{"name":"Eclipse Public License - v 1.0","version":"1.0","spdx":"EPL-1.0","use":0,"url":["http://www.eclipse.org/legal/epl-v10.html"],"_id":"iZiFSoqqGccD20TD"}
+{"name":"Mozilla Public License, Version 2.0","version":"2.0","spdx":"MPL-2.0","use":15,"url":[],"_id":"joiY8B8qNhg1AF9P"}
+{"name":"Apache License 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"lMXBehGO5AhHaOU4"}
+{"name":"Apache Public License 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"lUwQJruNFCPkxqFX"}
+{"name":"GNU Library General Public License v2.1 or later","version":"3.0-or-later","spdx":"GPL-3.0-or-later","use":13,"url":[],"_id":"lVjPsY9O46DsNdsR"}
+{"name":"BSD 2-Clause License","version":"","spdx":"BSD-2-Clause","use":15,"url":[],"_id":"mOPpWCrUIfOuWnF4"}
+{"name":"Dual license consisting of the CDDL v1.1 and GPL v2","version":"","spdx":"(CDDL-1.1 OR GPL-2.0-only)","use":0,"url":[],"_id":"myITYE9GRQzubTaw"}
+{"name":"Apache-2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"n7MLW7o2SqSE3Kzj"}
+{"name":"MIT License","version":"","spdx":"MIT","use":15,"url":[],"_id":"nVU1fYVyADYvOf5d"}
+{"name":"CDDL 1.1 OR GPL2 w/ CPE","version":"","spdx":"(CDDL-1.1 OR GPL-2.0-with-classpath-exception)","use":1,"url":["https://glassfish.dev.java.net/public/CDDL+GPL_1_1.html","http://glassfish.java.net/public/CDDL+GPL_1_1.html","https://oss.oracle.com/licenses/CDDL+GPL-1.1"],"_id":"oRbKvloF6GcM7c2T"}
+{"name":"CDDL + GPLv2 with classpath exception","version":"","spdx":"(CDDL-1.0 OR GPL-2.0-with-classpath-exception)","use":1,"url":[],"_id":"oRcKvloF6GcM7c2T"}
+{"name":"BSD licence","version":"","spdx":"BSD-4-Clause","use":0,"url":["http://www.opensource.org/licenses/bsd-license.php"],"_id":"omZs9QlGk6T90KqV"}
+{"name":"BSD-2-Clause","version":"","spdx":"BSD-2-Clause","use":15,"url":[],"_id":"pYgg4x13bykIHS5R"}
+{"name":"MPL 2.0 or EPL 1.0","version":"","spdx":"(MPL-2.0 OR EPL-1.0)","use":0,"url":[],"_id":"pZ7KIZepcT8A8f56"}
+{"name":"Revised BSD","version":"2.0","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"qGWXo463t1W5et1V"}
+{"name":"The Apache Software License, Version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"r8LNhRtBjT2HDrDa"}
+{"name":"Apache Software License - Version 2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"r8LNhRtBvT2HDrDa"}
+{"name":"The MIT License","version":"","spdx":"MIT","use":15,"url":[],"_id":"sANKcX0P7slL3KYx"}
+{"name":"BSD License 3-Clause","version":"","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"umZs9QlGk6T90KqV"}
+{"name":"BSD style","version":"","spdx":"","use":0,"url":[],"_id":"vELbjlMMY8T0ktaj"}
+{"name":"Public Domain","version":"","spdx":"","use":0,"url":[],"_id":"vmcVhi2zLr3syXbY"}
+{"name":"Apache License 2","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"vxFLANIE8pu0N9me"}
+{"name":"GNU Lesser General Public License v2.1 or later","version":"2.1-or-later","spdx":"LGPL-2.1-or-later","use":0,"url":[],"_id":"wHY3UAKqV3qSg9Ei"}
+{"name":"Apache Software License, Version 1.1","version":"1.1","spdx":"Apache-1.1","use":0,"url":[],"_id":"wQBnLFsLDJjVXgou"}
+{"name":"The BSD License","version":"1.0","spdx":"BSD-4-Clause","use":0,"url":["http://www.opensource.org/licenses/bsd-license.php"],"_id":"xSuDS3IlEMb3rS1n"}
+{"name":"Apache License v2.0","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"y3flAXm3p2K2cmMu"}
+{"name":"Apache 2","version":"2.0","spdx":"Apache-2.0","use":15,"url":["http://www.apache.org/licenses/LICENSE-2.0","https://www.apache.org/licenses/LICENSE-2.0","http://www.apache.org/licenses/LICENSE-2.0."],"_id":"y3flAXn3p2K2cmMu"}
+{"name":"BSD New license","version":"2.0","spdx":"BSD-3-Clause","use":15,"url":[],"_id":"z1QGSn1kClGYbPwQ"}
+{"name":"MIT License X11","version":"","spdx":"MIT","use":15,"url":[],"_id":"z1QVSn1kClGYbPvQ"}
+{"name":"GNU Affero General Public License v3.0","version":"3.0-only","spdx":"AGPL-3.0-only","use":1,"url":[],"_id":"z1QVSn1kClGYbPwQ"}
