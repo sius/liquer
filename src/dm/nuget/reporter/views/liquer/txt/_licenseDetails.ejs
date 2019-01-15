@@ -1,0 +1,16 @@
+<% let i = 1;
+	licenseGroups.forEach( (g) => { -%>
+	<% g.dependencies.forEach( (d) => { %>
+<%-i++ %>. <%- d.fullname %>
+
+	- Project-Url:                (Source: <%- d.package[0].file %>)
+		<%- d.package[0].metadata.projectUrl %>
+
+	- License-Url:                (Source: <%- d.package[0].file %>)
+		<%- d.package[0].metadata.licenseUrl %>
+
+	- License Text:
+	
+		---> TODO: Insert License text <---
+	<% }); -%>
+<% }); -%>

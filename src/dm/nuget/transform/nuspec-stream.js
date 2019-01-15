@@ -116,6 +116,7 @@ function nuspecStream(options) {
         options.log.write(`[ERROR] ${err.message}\n`)
       }
       dependency.package = packages;
+      
       cb(null, dependency);
     })
   }

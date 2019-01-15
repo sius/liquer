@@ -1,0 +1,23 @@
+Summary
+<%- description %>
+
+1  Dependencies (<%- dependencies.length %>)
+------------------------------------------------------ 
+<%- include('_dependencies', { dependencies }); -%>
+
+2   Licenses
+2.1 Overview
+------------------------------------------------------
+<%- include('_licenseCounter', { licenseCounter }); -%>
+
+
+2.2 Dependencies grouped by license
+------------------------------------------------------
+<%- include('_licenseGroups', { licenseGroups }); -%>
+
+
+2.3 License details
+  * Project URL
+  * License URL
+------------------------------------------------------
+<%- include('_licenseDetails', { licenseGroups }); -%>

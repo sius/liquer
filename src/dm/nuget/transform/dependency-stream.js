@@ -30,8 +30,8 @@ function _resolveComponentPath(componentPath, resolvedComponentPathCallback) {
           return resolvedComponentPathCallback(err);
         }
   
-        const resolvedComponentPath = files.find( (file) => file.startsWith(path.basename(sanitizedPath)) && _isDir(path.resolve(dirname,file)) );
-        
+        const resolvedComponentPath = files.find( (file) => new RegExp(path.basename(sanitizedPath), 'iy').test(file) && _isDir(path.resolve(dirname,file)) );
+ 
         if (resolvedComponentPath) {
           resolvedComponentPathCallback(null, resolvedComponentPath);
         } else {

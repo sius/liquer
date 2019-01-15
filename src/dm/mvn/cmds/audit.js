@@ -21,7 +21,7 @@ exports.builder = (yargs) => {
   }).option('log', {
       alias: 'o'
     , describe: 'The output file name'
-    , default: 'log.txt'
+    , default: 'mvn.log'
   }).option('working-directory', {
       alias: 'd'
     , describe: 'The working directory name.'

@@ -1,14 +1,14 @@
 const os = require('os')
   , { resolve } = require('path')
-  , { audit } = require('../audit')
+  , { audit } = require('../audit');
 
-const nuget = (/^Windows_NT/.test(os.type())) ? 'nuget' : 'mono nuget'
+const nuget = (/^Windows_NT/.test(os.type())) ? 'nuget' : 'nuget'
 
 function getDefaultConfigFile() {
   if (/^Windows_NT/.test(os.type())) {
-    return `${os.homedir}\AppData\NuGet\NuGet.config`
+    return `${os.homedir}\AppData\Roaming\NuGet\NuGet.config`;
   } else {
-    return `${os.homedir}/.nuget/NuGet/NuGet.config`
+    return `${os.homedir}/.nuget/NuGet/NuGet.Config`;
   }
 }
 
@@ -21,7 +21,7 @@ exports.builder = (yargs) => {
     .option('command', {
         describe: `The nuget command. Default is 'nuget' but could be 'mono nuget' on linux or macOS`
       , type: 'string'
-      , default: 'nuget'
+      , default: nuget
     }).option('packages-config', {
         alias: ['file', 'f']
       , describe: 'Path to your packages.config file'
@@ -30,7 +30,7 @@ exports.builder = (yargs) => {
     }).option('log', {
         alias: 'o'
       , describe: 'The log output file name'
-      , default: 'log.txt'
+      , default: 'nuget.log'
     }).option('working-directory', {
         alias: 'd'
       , describe: 'The working directory name.'
@@ -40,9 +40,9 @@ exports.builder = (yargs) => {
 
     // Nuget options:
     .option('ConfigFile', {
-        describe: 'The NuGet configuration file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file'
+        describe: 'The NuGet configuration file.'
       , type: 'string'
-      , default: resolve(__dirname, '../config/NuGet.Config')
+      , default: getDefaultConfigFile()
       , group: 'Nuget options:'
     }).option('Framework', {
         describe: `Target framework used for selecting dependencies. Defaults to 'Any' if not specified.`

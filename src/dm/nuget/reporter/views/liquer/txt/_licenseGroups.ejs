@@ -1,0 +1,7 @@
+<% licenseGroups.forEach( (g) => { -%>
+  * <%- g.licenseName %> (<%- g.dependencies.length %>)
+  
+  <% g.dependencies.forEach((d) => { -%>
+    <%- d.fullname %>
+  <% }); %>
+<% }); -%>

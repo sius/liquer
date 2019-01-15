@@ -1,12 +1,14 @@
 
 const { spawn } = require('child_process')
-  , { resolve, basename } = require('path')
+  , { resolve } = require('path')
   , { map, split } = require('event-stream')
   , { ensureDir, createWriteStream } = require('fs-extra')
   , { dependencyStream, logStream, nuspecStream } = require('./transform')
   , { repodbStream } = require('../../lib/transform')
   , { timestamp, copyInput } = require('../../lib/utils')
-  , Datasource = require('nedb');
+  , Datasource = require('nedb')
+  , Reporter = require('../../lib/reporter')
+  , chalk = require('chalk');
 
 const packagesConfig = 'packages.config';
 const DEFAULT_OPTIONS = {
@@ -30,7 +32,7 @@ function _runCommand(options) {
   const outputPath = resolve(workingDirectory, timestamp());
   const file = resolve(options.packagesConfig);
   const fileDest = resolve(outputPath, packagesConfig);
-  const configFile = options.configFile;
+  const ConfigFile = options.ConfigFile;
   const logFile = resolve(outputPath, options.log);
   const localRepoDir = resolve(outputPath, options.localRepoDir);
   const localRepoDbPath = resolve(outputPath, `${options.localRepoDir}.db`);
@@ -47,45 +49,31 @@ function _runCommand(options) {
 
     // create log file
     const log = createWriteStream(logFile, { flags: 'a+' })
-    const opts = { log, repoDb, localRepoDir };
+    const cwd = outputPath
+    const opts = { ...options, cwd, log, repoDb, localRepoDir, ConfigFile };
     
-    const args = ['install', fileDest, '-NoCache', '-ConfigFile', './src/dm/nuget/config/NuGet.Config', '-OutputDirectory', localRepoDir];
+    const args = ['install', fileDest, '-NoCache', '-ConfigFile', ConfigFile, '-OutputDirectory', localRepoDir];
     const spawnOptions = { 
       stdio:  ['pipe', 'pipe', 'pipe']
     , env: process.env }; 
 
     spawn(command, args, spawnOptions)
     .stdio[1]
-    .on('end', () => {
-      /* opts.repoDb.find({}, (_err, docs) => {
-        if (_err) {
-          opts.log.write(_err.message);
-        }
-        console.log(`Updating ${docs.length} dependencies`);
-        readArray(docs)
-          //.pipe(map(licenseStream(opts)))
-          //.pipe(map(repoDbStream(opts)))
-          //.pipe(map(logStream(opts)))
-          .on('end', () => {
-            updateScope(opts, (opts2) => {
-              opts.repoDb.persistence.compactDatafile();
-              (opts.repoDb as any).on('compaction.done', () => {
-                report(opts, () => {
-                  opts.log.close();
-                  console.log(`${green('( done )')}: ${underline(opts.reportPath)}`);
-                  process.exit(0);
-                });
-              });
-            });
-          })
-          .pipe(process.stdout);
-      }); */
-    })
+    
     .pipe(split())
     .pipe(map(dependencyStream(opts)))
     .pipe(map(nuspecStream(opts)))
     .pipe(map(repodbStream(opts)))
     .pipe(map(logStream(opts)))
+    .on('error', (err1) => console.error(err1) )
+    .on('end', () => {
+      const report = Reporter.report(opts);
+      report().then(() => {
+        console.log(chalk.green('done'));
+        console.log(`see: ${outputPath}`);
+        process.exit(0);
+      });
+    })
     .pipe(process.stdout);
   });
 }
