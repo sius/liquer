@@ -1,16 +1,28 @@
 <% let i = 1;
 	licenseGroups.forEach( (g) => { -%>
-	<% g.dependencies.forEach( (d) => { %>
+	<% g.dependencies.forEach( (d) => { 
+		const p = d.package[0];
+		%>
 <%-i++ %>. <%- d.fullname %>
 
-	- Project-Url:                (Source: <%- d.package[0].file %>)
-		<%- d.package[0].metadata.projectUrl %>
+	- Authors:                    (Source: <%- p.file %>)
+		<%- p.metadata.authors %>
 
-	- License-Url:                (Source: <%- d.package[0].file %>)
-		<%- d.package[0].metadata.licenseUrl %>
+	- Owners:                     (Source: <%- p.file %>)
+		<%- p.metadata.owners %>
+	<% if (p.metadata.copyright) { -%>	
+  - Copyright:                  (Source: <%- p.file %>)
+		<%- p.metadata.copyright %>
+	<% } -%>
+
+	- Project-Url:                (Source: <%- p.file %>)
+		<%- p.metadata.projectUrl %>
+
+	- License-Url:                (Source: <%- p.file %>)
+		<%- p.metadata.licenseUrl %>
 
 	- License Text:
-	
+
 		---> TODO: Insert License text <---
 	<% }); -%>
 <% }); -%>
