@@ -3,8 +3,9 @@ const path = require('path')
   , utils = require('../../../lib/utils');
 
 /**
- * Try nested node_module install path first 
- * and fallback to shallow node_module install path
+ * During ~postinstall: 
+ * try nested install path first and pop last segment;
+ * fallback to shallow install path
  * @param {Array<string>} installPath 
  * @param {*} options 
  * @param {(err: Error, package: { package:*, license:string }) => void} cb 
@@ -33,7 +34,6 @@ function _readPackageFiles(installPath, options, cb) {
                 if (file === 'package.json') {
                   resolve({ package: JSON.parse(data, utils.keyNameReviver) })
                 } else {
-                  console.log(options.outputPath)
                   resolve({ license: data, licensefile: path.relative(options.outputPath, filepath) })
                 }
               });
