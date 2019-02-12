@@ -4,10 +4,8 @@
   "description": "license query cli",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
-    "schema": "tsc && node dist/db/schema/json/jsonSchema",
-    "start": "tsc && liquer mvn",
-    "test": "mocha --timeout 10000 -r ts-node/register src/test/**/*.spec.ts",
+    "schema": "node src/db/schema/json/jsonSchema",
+    "test": "mocha --timeout 10000 test/**/*.spec.js",
     "nuget": "node src/dm/nuget/audit.js"
   },
   "bin": {
@@ -21,12 +19,14 @@
     "event-stream": "3.3.4",
     "first-chunk-stream": "^2.0.0",
     "fs-extra": "^7.0.1",
+    "iconv-lite": "^0.4.24",
     "inquirer": "^6.2.1",
     "is-utf8": "^0.2.1",
     "moment": "^2.22.2",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.13",
     "nedb": "^1.8.0",
+    "object-path": "^0.11.4",
     "os": "^0.1.1",
     "request": "^2.88.0",
     "spdx-expression-parse": "^3.0.0",

@@ -88,8 +88,6 @@ function _getTypeCounter(dependencies) {
     const jarPackMavenPluginCount = dependencies.reduce( (acc, d) => (d.hasJarFile && ('maven-plugin' === d.pom.project.packaging)) ? ++acc: acc, 0);
     const jarPackEclipsePluginCount = dependencies.reduce( (acc, d) => (d.hasJarFile && ('eclipse-plugin' === d.pom.project.packaging)) ? ++acc: acc, 0);
   const pomCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile)  ? ++acc: acc, 0);
-    const pomUndefinedNoBomCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile && !d.isBOM && ('pom' === (d.pom.project.packaging || 'pom'))) ? ++acc: acc, 0);
-    const pomBomCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile && d.isBOM) ? ++acc: acc, 0);
     const pomPackJarCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile && ('jar' === d.pom.project.packaging)) ? ++acc: acc, 0);
     const pomPackBundleCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile && ('bundle' === d.pom.project.packaging)) ? ++acc: acc, 0);
     const pomPackMavenPluginCount = dependencies.reduce( (acc, d) => (!d.hasJarFile && d.hasPomFile && ('maven-plugin' === d.pom.project.packaging)) ? ++acc: acc, 0);
@@ -104,8 +102,6 @@ function _getTypeCounter(dependencies) {
     , jarPackMavenPluginCount
     , jarPackEclipsePluginCount
     , pomCount
-    , pomUndefinedNoBomCount
-    , pomBomCount
     , pomPackJarCount
     , pomPackBundleCount
     , pomPackMavenPluginCount

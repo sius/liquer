@@ -2,10 +2,10 @@
 const { spawn } = require('child_process')
   , { resolve } = require('path')
   , { map, split } = require('event-stream')
-  , { ensureDir, createWriteStream } = require('fs-extra')
-  , { dependencyStream, logStream, nuspecStream } = require('./transform')
+  , { ensureDir, createWriteStream, readdir } = require('fs-extra')
+  , { addedStream, logStream, dependencyStream, extractStream } = require('./transform')
   , { repodbStream } = require('../../lib/transform')
-  , { timestamp, copyInput } = require('../../lib/utils')
+  , { timestamp, copyInput, isDir } = require('../../lib/utils')
   , Datasource = require('nedb')
   , Reporter = require('../../lib/reporter')
   , chalk = require('chalk');
@@ -58,23 +58,39 @@ function _runCommand(options) {
     , env: process.env }; 
 
     spawn(command, args, spawnOptions)
-    .stdio[1]
-    
-    .pipe(split())
-    .pipe(map(dependencyStream(opts)))
-    .pipe(map(nuspecStream(opts)))
-    .pipe(map(repodbStream(opts)))
-    .pipe(map(logStream(opts)))
-    .on('error', (err1) => console.error(err1) )
-    .on('end', () => {
-      const report = Reporter.report(opts);
-      report().then(() => {
-        console.log(chalk.green('done'));
-        console.log(`see: ${outputPath}`);
-        process.exit(0);
-      });
-    })
-    .pipe(process.stdout);
+      .stdio[1]
+      .on('end', () => {
+        readdir(opts.localRepoDir, (err, files) => {
+          if (err) {
+            opts.log.write(err);
+            console.error(chalk.red(err))
+          }
+          const packages = files
+            .map((file) => resolve(opts.localRepoDir, file))
+            .filter( (f) => isDir(f));
+          
+            console.log(`Updating repo.db with ${packages.length} dependencie(s)`);
+            readArray(packages)
+              .pipe(map(dependencyStream(opts)))
+              .pipe(map(extractStream(opts)))
+              .pipe(map(repodbStream(opts)))
+              .pipe(map(logStream(opts)))
+              .on('error', (err1) => console.error(`${err1}`))
+              .on('end', () => {
+                const report = Reporter.report(opts);
+                report().then(() => {
+                  console.log(chalk.green('done'));
+                  console.log(`see: ${outputPath}`);
+                  process.exit(0);
+                });
+              })
+
+        })
+      })
+      .pipe(split())
+      .pipe(map(addedStream(opts)))
+      .pipe(map(logStream(opts)))
+      .pipe(process.stdout);
   });
 }
 

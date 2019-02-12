@@ -1,15 +1,8 @@
 const { readFile, readdir } = require('fs')
   , { getFullName } = require('../badges')
-  , path = require('path')
-  , xml2js = require('xml2js')
-  , pomParser = new xml2js.Parser({
-      ignoreAttrs: true,
-      explicitArray: false,
-      tagNameProcessors: [(name) => name.replace(/\./g, '_')]
-    }
-  );
+  , { objFromXmlFile } = require('../../../lib/utils')
+  , path = require('path');
 
-const BOM_NODE_BLACKLIST = ['dependencies'];
 function _grabFirstComment(xmlStr) {
   let ret = null;
   if (!xmlStr) {
@@ -62,61 +55,17 @@ function _ftostr(filename, options, cb) {
   }
 }
 
-function _pom(pomfile, options, cb) {
-  if (pomfile) {
-    readFile(pomfile, { encoding: 'utf8', flag: 'r' } , (err, xml) => {
-      if (err) {
-        options.log.write(`${err}\n`)
-      }
-      if (xml) {
-          pomParser.parseString(xml, (err2, pom) => {
-          if (err2) {
-            options.log.write(`${err2}\n`);
-          }
-          const names = []
-            , title = null
-            , text = _grabFirstComment(xml)
-            , url = _getLicenseUrl(text)
-            , license = { names, title, text, url }
-          cb({ license, pom });
-        })
-      } else {
-        cb(null);
-      }
-    });
-  } else {
-    cb(null);
-  }
-}
 /**
- * Bill of Materials (BOM)
- * - no aggregation (Multi-module), build, reporting etc.
- * - only dependencyManagement (aka: the 'Bill of Materials')
- * @param {*} dependency
+ * 
+ * @param {*} dependency 
+ * @param {*} options 
+ * @param { (err:Error, dependency:*) => void } cb 
  */
-function _detectBOM(dependency) {
-  const pom = dependency.pom;
-  if (pom.project) {
-    const noJar = !dependency.hasJarFile
-    const noJarPackaging = !('jar' === pom.project.packaging);
-    const extNameIsPom = ('pom' === dependency.extname)
-    const found = Object.keys(pom.project).find(attr => BOM_NODE_BLACKLIST.includes(attr));
-    const nameHint = /-bom$/.test(dependency.gav.artifactId) || /-bom$/.test(pom.project.name);
-    const dmHint = ( pom.project.dependencyManagement
-      && pom.project.dependencyManagement.dependencies 
-      && pom.project.dependencyManagement.dependencies.dependency);
-    return (!found && (nameHint || dmHint) && noJar && noJarPackaging && extNameIsPom);
-  }
-  return false;
-}
-
 function _getFiles(dependency, options, cb) {
   const dirname = dependency.dirname;
 
   readdir(dirname, (err, files) => {
-    if (err) {
-      options.log.write(`${err}\n`)
-    }
+    
     const pomfile = _fileEndsWith(dirname, files, '.pom');
     const pomSha1File = _fileEndsWith(dirname, files, '.pom.sha1');
     const jarfile = _fileEndsWith(dirname, files, '.jar');
@@ -134,21 +83,25 @@ function _getFiles(dependency, options, cb) {
         dependency.jarSha1 = sha1;
 
         if (dependency.pom) {
-          dependency.isBOM = _detectBOM(dependency);
-          cb(dependency);
+          cb(err, dependency);
         } else {
-          dependency.isBOM = false;
           if (dependency.hasPomFile) {
-            _pom(pomfile, options, (data) => {
-              if (data) {
-                dependency.license = data.license;
-                dependency.pom = data.pom;
-                dependency.isBOM = _detectBOM(dependency);
-              }
-              cb(dependency)
+
+            objFromXmlFile(pomfile, (err, pomStr, pomObj) => {
+   
+              const names = []
+              , title = null
+              , text = _grabFirstComment(pomStr)
+              , url = _getLicenseUrl(text)
+              , license = { names, title, text, url }
+          
+              dependency.license = license;
+              dependency.pom = pomObj;
+
+              cb(err, dependency)
             });
           } else {
-            cb(dependency)
+            cb(err, dependency)
           }
         }
       }) 
@@ -165,7 +118,10 @@ function _getFiles(dependency, options, cb) {
 function filesStream(options) {
   
   return (dependency, cb) => {
-    _getFiles(dependency, options, (dependency) => {
+    _getFiles(dependency, options, (err, dependency) => {
+      if (err) {
+        options.log.write(`${err}\n`)
+      }
       dependency.fullname = getFullName(dependency);
       cb(null, dependency)
     })

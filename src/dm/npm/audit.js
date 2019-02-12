@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
     package: ''
   , localRepoDir: 'repo'
   , remoteRepo: null
-  , log: 'err.log'
+  , log: 'npm.log'
   , reporterPath: resolve(__dirname, 'reporter')
   , templatePath: resolve(__dirname, 'reporter/views')
 };
@@ -57,7 +57,8 @@ function _runCommand(options) {
     // create log file
     const log = createWriteStream(logFile, { flags: 'a+' })
     const cwd = resolve(process.cwd(), outputPath);
-    const opts = { ...options, verbose, registry, cwd, log, repoDb };
+    const packageLock = {};
+    const opts = { ...options, verbose, registry, outputPath, cwd, log, repoDb, packageLock };
     const args = ['ci', '-d','--registry', DEFAULT_OPTIONS.remoteRepo]
     const spawnOptions = { 
         stdio:  [null, null, 'pipe']

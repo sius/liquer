@@ -3,48 +3,49 @@ const path = require('path')
   , utils = require('../../../lib/utils');
 
 /**
- * 
- * @param {string} path 
+ * Try nested node_module install path first 
+ * and fallback to shallow node_module install path
+ * @param {Array<string>} installPath 
  * @param {*} options 
  * @param {(err: Error, package: { package:*, license:string }) => void} cb 
  */
-function _readPackageFiles(folderpath, options, cb) {
-  const packagedir = path.join(options.cwd, folderpath);
-  fs.exists(packagedir, (exists) => {
-
-    if (exists) {
-
-      fs.readdir(packagedir, (err, files) => {
-        if (err) {
-          return cb(err);
-        }
-        Promise.all(
-          files
-            .filter( (f) => f === 'package.json' || /^LICENSE/i.test(f))
-            .map( (file) => {
-              return new Promise( (resolve, reject) => {
-                const filepath = path.join(packagedir, file);
-                fs.readFile(filepath, 'utf8', (err, data) => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  if (file === 'package.json') {
-                    resolve({ package: JSON.parse(data, utils.keyNameReviver) })
-                  } else {
-                    resolve({ license: data, licensefile: file })
-                  }
-                });
+function _readPackageFiles(installPath, options, cb) {
+  const nestedPath = installPath.slice(1).join('/')
+  const shallowPath = installPath.pop();
+  const packagedir = [nestedPath, shallowPath]
+    .map((mp) => path.join(options.outputPath, mp))
+    .find((fp) => fs.existsSync(fp));
+  if (packagedir) {
+    fs.readdir(packagedir, (err, files) => {
+      if (err) {
+        return cb(err);
+      }
+      Promise.all(
+        files
+          .filter( (f) => f === 'package.json' || /^LICENSE/i.test(f))
+          .map( (file) => {
+            return new Promise( (resolve, reject) => {
+              const filepath = path.join(packagedir, file);
+              fs.readFile(filepath, 'utf8', (err, data) => {
+                if (err) {
+                  return reject(err);
+                }
+                if (file === 'package.json') {
+                  resolve({ package: JSON.parse(data, utils.keyNameReviver) })
+                } else {
+                  console.log(options.outputPath)
+                  resolve({ license: data, licensefile: path.relative(options.outputPath, filepath) })
+                }
               });
-            }))
-        .then( (values) => cb(null, Object.assign({}, ...values)))
-        .catch(err => cb(err));
-      });
+            });
+          }))
+      .then( (values) => cb(null, Object.assign({}, ...values)))
+      .catch(err => cb(err));
+    });
 
-    } else {
-      cb(null, { package: null, license: null, licensefile: null })
-    }
-  })
-  
+  } else {
+    cb(null, { package: null, license: null, licensefile: null })
+  }
 }
 
 /**
@@ -118,24 +119,30 @@ function _preLicenseManagement(package) {
  * @param {*} options 
  */
 function dependencyStream(options) {
+  const installPath = [];
   const log = options.log;
   const pkg_type = 'npm';
 
   return (line, cb) => {
     
     log.write(`${line}\n`);
-    const res = /~postinstall:\s+(((@[^:@]+)\/)?([^:@]+)@([^:@]+))$/i.exec(line);
+    const res = /~(preinstall|postinstall):\s+(((@[^:@]+)\/)?([^:@]+)@([^:@]+))$/i.exec(line);
     if (res) {
-      const fullname = res[1];
+      const status = res[1];
+      const fullname = res[2];
       const component_id = fullname;
       const component_scheme = 'npm://';
-      const parentdir = res[2] || '';
-      const scope = res[3] || null;
-      const name = res[4];
-      const version = res[5];
+      const parentdir = res[3] || '';
+      const scope = res[4] || null;
+      const name = res[5];
+      const version = res[6];
       const path = `node_modules/${parentdir}${name}`;
+      if (status === 'preinstall') {
+        installPath.push(path);
+        return cb();
+      }
 
-      _readPackageFiles(path, options, (err, filedata) => {
+      _readPackageFiles(installPath, options, (err, filedata) => {
         
         if (err) {
           return cb(err)

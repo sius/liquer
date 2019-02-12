@@ -1,5 +1,6 @@
 module.exports = {
-    ...require('./dependency-stream')
-  , ...require('./nuspec-stream')
+    ...require('./added-stream')
+  , ...require('./dependency-stream')
+  , ...require('./extract-stream')
   , ...require('./log-stream')
 }

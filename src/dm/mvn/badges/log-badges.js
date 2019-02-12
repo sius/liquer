@@ -13,12 +13,6 @@ function _getMergedType(dependency) {
     }
   } else if (dependency.hasPomFile) {
     ret = 'pom';
-    if (dependency.pom.project.packaging && ('pom' !== dependency.pom.project.packaging)) {
-      ret += ` (packaging: ${dependency.pom.project.packaging})`;
-    }
-    if (dependency.isBOM) {
-      ret = ret + ' (BOM)'
-    }
   }
   return ret;
 }

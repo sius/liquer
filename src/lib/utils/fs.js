@@ -1,5 +1,9 @@
-const { copyFile, pathExists } = require('fs-extra') ;
+const { copyFile, pathExists, statSync } = require('fs-extra');
+const path = require('path');
 
+function isDir(source) {
+  return statSync(source).isDirectory();
+}
 /**
  * 
  * @param {string} src 
@@ -22,4 +26,26 @@ function copyInput(src, dest, optional = false) {
   });
 }
 
-module.exports = { copyInput }
+/**
+ * 
+ * @param {*} files 
+ * @param {*} folder 
+ * @param { {err: Error, CopyInfo: { srcFiles:Array<String>, destFiles: Array<String> }}} copyInfoCallback 
+ */
+function copyFilesToDir(files, dir, copyInfoCallback) {
+
+  Promise.all(files.map((f) => {
+    return new Promise( (resolve, reject) => {
+      path.relative(f, )
+    });
+  }))
+  .then( (values) => {
+    const copyInfo = {
+        srcFiles: files
+      , destFiles: values
+    }
+    copyInfoCallback
+  })
+  .catch( (reason) => copyInfoCallback(reason));
+}
+module.exports = { copyInput, isDir }

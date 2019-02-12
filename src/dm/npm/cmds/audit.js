@@ -44,10 +44,7 @@ exports.builder = (yargs) => {
 };
 exports.handler = (argv) => {
   const options = {
-      command: argv.command
-    , package: argv.package
-    , workingDirectory: argv.workingDirectory
-    , logFile: argv.log
+      ...argv
     , reporterPath: resolve(__dirname, '../reporter')
     , templatePath: resolve(__dirname, '../reporter/views')
   }
